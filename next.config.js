@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/gigglenshine-site',
+  assetPrefix: '/gigglenshine-site',
   images: {
     unoptimized: true,
     remotePatterns: [
