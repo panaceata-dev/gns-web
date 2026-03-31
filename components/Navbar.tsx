@@ -46,7 +46,7 @@ export default function Navbar() {
           <a href="#home" className="flex items-center gap-2.5 group">
             <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-[#F97066]/20 group-hover:shadow-[#F97066]/40 transition-shadow">
               <Image
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69af92af36ccb323ff991835/d53fb1c25_generated_image.png"
+                src="/logo.png"
                 alt="Giggle N Shine Logo"
                 width={40}
                 height={40}

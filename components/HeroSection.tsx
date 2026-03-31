@@ -157,7 +157,7 @@ export default function HeroSection() {
               {/* Image card */}
               <div className="relative bg-white rounded-[2.5rem] p-3 shadow-2xl shadow-slate-200/50 border border-slate-100">
                 <Image
-                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69af92af36ccb323ff991835/5ef4f4b10_generated_image.png"
+                  src="/hero.png"
                   alt="Happy children in daycare"
                   width={600}
                   height={460}
