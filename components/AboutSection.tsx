@@ -31,7 +31,7 @@ export default function AboutSection() {
             {/* Image card */}
             <div className="relative bg-white rounded-[2rem] p-2 shadow-xl border border-slate-100">
               <Image
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69af92af36ccb323ff991835/c4a0778b1_generated_image.png"
+                src="/about.png"
                 alt="Children learning"
                 width={600}
                 height={420}
