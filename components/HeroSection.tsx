@@ -55,8 +55,8 @@ export default function HeroSection() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F97066]/10 border border-[#F97066]/15 mb-8">
                 <span className="w-2 h-2 rounded-full bg-[#F97066] animate-pulse" />
                 <span className="text-sm font-medium text-[#E85D53]">
-                  Optimized for Self-Owned Daycares
-                </span>
+                Trusted by independent daycare owners across the United States
+              </span>
               </div>
             </motion.div>
 
@@ -67,14 +67,14 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="text-5xl md:text-6xl lg:text-[68px] font-bold leading-[1.05] tracking-tight text-slate-900"
             >
-              Crafting{" "}
+              Daycare Management{" "}
               <span className="bg-gradient-to-r from-[#F97066] to-[#FB923C] bg-clip-text text-transparent">
-                Smiles,
+                Software
               </span>
               <br />
-              Managing{" "}
+              Built for{" "}
               <span className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] bg-clip-text text-transparent">
-                Care.
+                Independent Owners.
               </span>
             </motion.h1>
 
@@ -104,6 +104,13 @@ export default function HeroSection() {
                 Request a Demo
                 <ArrowRight className="ml-2 w-5 h-5" />
               </button>
+
+              <button
+              onClick={() => scrollTo("#contact")}
+              className="inline-flex items-center bg-white border-2 border-[#F97066] text-[#F97066] hover:bg-[#F97066] hover:text-white rounded-full px-8 h-14 text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
+            >
+              Try Free for 14 Days
+            </button>
 
               <button
                 onClick={() => scrollTo("#about")}
@@ -158,7 +165,7 @@ export default function HeroSection() {
               <div className="relative bg-white rounded-[2.5rem] p-3 shadow-2xl shadow-slate-200/50 border border-slate-100">
                 <Image
                   src="/hero.png"
-                  alt="Happy children in daycare"
+                  alt="Daycare staff managing children with Giggle N Shine software"
                   width={600}
                   height={460}
                   className="w-full h-[460px] object-cover rounded-[2rem]"

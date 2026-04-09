@@ -32,7 +32,7 @@ export default function AboutSection() {
             <div className="relative bg-white rounded-[2rem] p-2 shadow-xl border border-slate-100">
               <Image
                 src="/about.png"
-                alt="Children learning"
+                alt="Children learning at independent daycare"
                 width={600}
                 height={420}
                 className="w-full h-[420px] object-cover rounded-[1.7rem]"
