@@ -90,6 +90,70 @@ export default function AboutSection() {
             </div>
           </motion.div>
         </div>
+
+        {/* New Content Block */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="mt-28 max-w-3xl"
+        >
+          <h3 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-8">
+            Built for Self-Owned Daycares and Independent Childcare Centers
+          </h3>
+
+          <div className="space-y-6">
+            <p className="text-base text-slate-600 leading-relaxed">
+              Running an independent childcare center is nothing like managing a
+              large daycare chain. You wear every hat — director, caregiver,
+              billing manager, and parent liaison — often all before lunchtime.
+              Giggle N Shine was built with exactly that reality in mind. Whether
+              you operate a licensed home-based daycare, a small neighborhood
+              childcare center, or a family-run facility, every feature is
+              designed to reduce your admin burden and give you more time with the
+              children in your care.
+            </p>
+
+            <p className="text-base text-slate-600 leading-relaxed">
+              Unlike generic business software, Giggle N Shine understands the
+              day-to-day of a self-owned daycare — from tracking individual meal
+              plans and nap schedules to sending real-time updates to parents who
+              trust you with their most precious responsibility.
+            </p>
+
+            <div className="pt-4">
+              <h4 className="text-lg font-semibold text-slate-900 mb-4">
+                Compliance You Can Count On
+              </h4>
+              <p className="text-base text-slate-600 leading-relaxed">
+                For US-based childcare providers, data privacy is not optional.
+                Giggle N Shine supports FERPA-aligned record-keeping practices
+                and HIPAA-aware data storage, ensuring that sensitive child and
+                family information is handled with the care it deserves. You get
+                the peace of mind of enterprise-grade data practices — without
+                enterprise-level complexity or cost.
+              </p>
+            </div>
+
+            <div className="pt-4">
+              <h4 className="text-lg font-semibold text-slate-900 mb-4">
+                Trusted by Independent Daycare Owners Across the US
+              </h4>
+              <p className="text-base text-slate-600 leading-relaxed">
+                From single-room home daycares to independent childcare centers
+                with multiple classrooms, Giggle N Shine gives small providers
+                the same operational efficiency that large chains enjoy. Automated
+                billing eliminates late payment headaches. Digital attendance
+                replaces paper sign-in sheets. The parent mobile app keeps
+                families connected without a single phone call interrupting your
+                day. If you're a self-owned daycare owner looking to modernize
+                your operations, reduce paperwork, and grow with confidence —
+                Giggle N Shine is your partner from day one.
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

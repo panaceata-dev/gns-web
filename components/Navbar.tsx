@@ -2,15 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Features", href: "#features" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#home", isAnchor: true },
+  { label: "About", href: "#about", isAnchor: true },
+  { label: "Features", href: "#features", isAnchor: true },
+  { label: "Testimonials", href: "#testimonials", isAnchor: true },
+  { label: "Blog", href: "/blog", isAnchor: false },
+  { label: "Contact", href: "#contact", isAnchor: true },
 ];
 
 export default function Navbar() {
@@ -26,7 +28,12 @@ export default function Navbar() {
   const scrollTo = (href: string) => {
     setMobileOpen(false);
     const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // If element doesn't exist on current page, navigate to home with anchor
+      window.location.href = "/" + href;
+    }
   };
 
   return (
@@ -43,7 +50,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-[#F97066]/20 group-hover:shadow-[#F97066]/40 transition-shadow">
               <Image
                 src="/logo.png"
@@ -56,19 +63,29 @@ export default function Navbar() {
             <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
               Giggle N Shine
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => scrollTo(item.href)}
-                className="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-900 rounded-full hover:bg-slate-50 transition-all duration-200"
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) =>
+              item.isAnchor ? (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.href)}
+                  className="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-900 rounded-full hover:bg-slate-50 transition-all duration-200"
+                >
+                  {item.label}
+                </button>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-900 rounded-full hover:bg-slate-50 transition-all duration-200"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </div>
 
           {/* CTA */}
@@ -105,15 +122,26 @@ export default function Navbar() {
             className="md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 overflow-hidden"
           >
             <div className="px-6 py-4 space-y-1">
-              {navItems.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => scrollTo(item.href)}
-                  className="block w-full text-left px-4 py-3 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
+              {navItems.map((item) =>
+                item.isAnchor ? (
+                  <button
+                    key={item.label}
+                    onClick={() => scrollTo(item.href)}
+                    className="block w-full text-left px-4 py-3 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full text-left px-4 py-3 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
               <div className="pt-2">
                 <button
                   onClick={() => scrollTo("#contact")}
