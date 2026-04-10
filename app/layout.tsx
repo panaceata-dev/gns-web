@@ -3,20 +3,30 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Gigglenshine – Daycare Management Platform",
+  metadataBase: new URL("https://www.gigglenshine.com"),
+  title: "Daycare Management Software for Independent Owners | Giggle N Shine",
   description:
-    "A vibrant digital platform designed to bring joy and playfulness to everyday learning experiences through interactive storytelling.",
+    "Giggle N Shine helps self-owned daycares automate billing, attendance & parent communication. Request a free demo today.",
   icons: {
     icon: "/favicon.png",
   },
+  alternates: {
+    canonical: "https://www.gigglenshine.com/",
+  },
   openGraph: {
-    title: "Gigglenshine",
+    title: "Daycare Management Software for Independent Owners | Giggle N Shine",
     description:
-      "Your partner in streamlined daycare operations. Efficient management, secure care, and boundless opportunities for children to learn and thrive.",
-    images: [
-      "/logo.png",
-    ],
-    url: "https://gigglenshine.base44.app",
+      "Giggle N Shine helps self-owned daycares automate billing, attendance & parent communication. Request a free demo today.",
+    images: ["/hero.png"],
+    url: "https://www.gigglenshine.com/",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Daycare Management Software for Independent Owners | Giggle N Shine",
+    description:
+      "Giggle N Shine helps self-owned daycares automate billing, attendance & parent communication. Request a free demo today.",
+    images: ["/hero.png"],
   },
 };
 

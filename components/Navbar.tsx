@@ -54,7 +54,7 @@ export default function Navbar() {
             <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-[#F97066]/20 group-hover:shadow-[#F97066]/40 transition-shadow">
               <Image
                 src="/logo.png"
-                alt="Giggle N Shine Logo"
+                alt="Giggle N Shine logo"
                 width={40}
                 height={40}
                 className="w-full h-full object-cover"

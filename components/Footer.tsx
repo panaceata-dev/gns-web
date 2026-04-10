@@ -70,7 +70,7 @@ export default function Footer() {
                   +1 (860) 593-2437
                 </a>
               </li>
-              <li>Sri Lanka</li>
+              <li>5 Senator Buck Court, South Glastonbury, CT 06073, USA</li>
             </ul>
             <div className="flex gap-3 mt-6">
               {social.map((s) => (

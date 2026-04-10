@@ -59,13 +59,7 @@ export default function TestimonialsSection() {
 
             {/* Quote text */}
             <p className="text-lg md:text-xl text-slate-600 leading-relaxed italic">
-              &ldquo;As a key figure behind the creation of our daycare product,
-              I am thrilled to recommend it wholeheartedly. This product embodies
-              the values we hold dear — safety, engagement, and holistic
-              development. Witnessing the joy and growth it brings to children
-              has been incredibly rewarding. Its carefully crafted features and
-              child-centric approach make it a must-have for any daycare
-              setting.&rdquo;
+              &ldquo;Since switching to Giggle N Shine, our admin time dropped by 40%. Billing, attendance, and parent updates all in one place — it&apos;s exactly what independent daycare owners need.&rdquo;
             </p>
 
             {/* Author */}
@@ -76,8 +70,8 @@ export default function TestimonialsSection() {
                 </span>
               </div>
               <div>
-                <div className="font-bold text-slate-900">Giggle N Shine Team</div>
-                <div className="text-sm text-slate-400">Sri Lanka</div>
+                <div className="font-bold text-slate-900">Independent Daycare Owner</div>
+                <div className="text-sm text-slate-400">United States</div>
               </div>
             </div>
           </div>

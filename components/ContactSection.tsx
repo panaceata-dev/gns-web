@@ -7,12 +7,14 @@ import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function ContactSection() {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  daycareName: "",
+  childrenEnrolled: "",
+  message: "",
+});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export default function ContactSection() {
         const data = await res.json();
         throw new Error(data.error || "Something went wrong. Please try again.");
       }
-      setSubmitted(true);
+     window.location.href = "/thank-you";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -152,6 +154,36 @@ export default function ContactSection() {
                       className="w-full h-12 rounded-xl border border-slate-200 px-4 text-sm focus:outline-none focus:border-[#F97066] focus:ring-2 focus:ring-[#F97066]/20 transition-all"
                     />
                   </div>
+                  <div>
+                <label className="text-sm font-medium text-slate-700 mb-2 block">
+                  Daycare Name
+                </label>
+                <input
+                  type="text"
+                  name="daycareName"
+                  value={form.daycareName}
+                  onChange={handleChange}
+                  required
+                  placeholder="e.g. Sunshine Kids Daycare"
+                  className="w-full h-12 rounded-xl border border-slate-200 px-4 text-sm focus:outline-none focus:border-[#F97066] focus:ring-2 focus:ring-[#F97066]/20 transition-all"
+                />
+              </div>
+
+              <div>
+              <label className="text-sm font-medium text-slate-700 mb-2 block">
+                Number of Children Enrolled
+              </label>
+              <input
+                type="number"
+                name="childrenEnrolled"
+                value={form.childrenEnrolled}
+                onChange={handleChange}
+                required
+                placeholder="e.g. 20"
+                min="1"
+                className="w-full h-12 rounded-xl border border-slate-200 px-4 text-sm focus:outline-none focus:border-[#F97066] focus:ring-2 focus:ring-[#F97066]/20 transition-all"
+              />
+            </div>
 
                   <div>
                     <label className="text-sm font-medium text-slate-700 mb-2 block">
@@ -237,7 +269,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <div className="text-sm text-slate-400 mb-1">Location</div>
-                    <span className="font-medium">Sri Lanka</span>
+                    <span className="font-medium">United States</span>
                   </div>
                 </div>
               </div>
