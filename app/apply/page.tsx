@@ -20,6 +20,12 @@ const stripePromise = loadStripe(
 );
 const API_URL = process.env.NEXT_PUBLIC_PORTAL_API_URL ?? '';
 
+// Display prices for the plan/payment screens. These are cosmetic — the amount
+// actually charged comes from the Stripe price (STRIPE_PRICE_MONTHLY / _ANNUAL on the
+// portal API). Keep these in sync with those Stripe prices.
+const PRICE_MONTHLY_AMOUNT = process.env.NEXT_PUBLIC_PRICE_MONTHLY ?? '$30';
+const PRICE_ANNUAL_AMOUNT = process.env.NEXT_PUBLIC_PRICE_ANNUAL ?? '$300';
+
 // ── Constants ──────────────────────────────────────────────────────
 
 const US_STATES = [
@@ -34,7 +40,7 @@ const US_STATES = [
   'Washington', 'West Virginia', 'Wisconsin', 'Wyoming',
 ];
 
-const STEP_LABELS = ['Business', 'Contact', 'Review', 'Plan', 'Payment'];
+const STEP_LABELS = ['Business', 'Contact', 'Plan', 'Review', 'Payment'];
 
 const PLAN_FEATURES = [
   'Full daycare management dashboard',
@@ -43,6 +49,7 @@ const PLAN_FEATURES = [
   'Attendance & billing automation',
   'Dedicated cloud environment',
   'Email support',
+  'No commitment · Cancel anytime',
 ];
 
 // ── Types ──────────────────────────────────────────────────────────
@@ -501,10 +508,11 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Step3({
-  formData, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
+function ReviewStep({
+  formData, billingInterval, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
 }: {
   formData: FormData;
+  billingInterval: 'monthly' | 'annual';
   captchaToken: string | null;
   onCaptcha: (token: string | null) => void;
   onSubmit: () => void;
@@ -512,10 +520,20 @@ function Step3({
   loading: boolean;
   error: string;
 }) {
+  const planName = billingInterval === 'annual' ? 'Annual' : 'Monthly';
+  const planAmount = billingInterval === 'annual' ? PRICE_ANNUAL_AMOUNT : PRICE_MONTHLY_AMOUNT;
+  const planPeriod = billingInterval === 'annual' ? 'per year' : 'per month';
   return (
     <>
-      <StepTitle icon={FileText} step={3} subtitle="Review your information" />
+      <StepTitle icon={FileText} step={4} subtitle="Review your information" />
       <div className="space-y-4 mb-6">
+        <div className="bg-slate-50 rounded-2xl p-5">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Plan</h3>
+          <div className="flex justify-between py-1">
+            <span className="text-sm text-slate-500">{planName} subscription</span>
+            <span className="text-sm font-medium text-slate-800">{planAmount} <span className="text-slate-400">{planPeriod}</span></span>
+          </div>
+        </div>
         <div className="bg-slate-50 rounded-2xl p-5">
           <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Business</h3>
           <ReviewRow label="Name" value={formData.business_name} />
@@ -576,44 +594,70 @@ function Step3({
   );
 }
 
-// ── Step 4: Plan Selection ─────────────────────────────────────────
+// ── Step 3: Plan Selection (Monthly / Annual) ──────────────────────
 
-function Step4({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
+function PlanStep({
+  selected, onSelect, onNext, onBack,
+}: {
+  selected: 'monthly' | 'annual';
+  onSelect: (v: 'monthly' | 'annual') => void;
+  onNext: () => void;
+  onBack: () => void;
+}) {
+  const plans: { id: 'monthly' | 'annual'; name: string; price: string; period: string; note: string }[] = [
+    { id: 'monthly', name: 'Monthly', price: PRICE_MONTHLY_AMOUNT, period: 'USD / month', note: 'Billed monthly · cancel anytime' },
+    { id: 'annual', name: 'Annual', price: PRICE_ANNUAL_AMOUNT, period: 'USD / year', note: 'Billed annually · best value' },
+  ];
   return (
     <>
-      <StepTitle icon={CreditCard} step={4} subtitle="Choose your plan" />
-      <div className="mb-8">
-        <div className="relative border-2 border-[#F97066] rounded-2xl p-6 bg-gradient-to-br from-[#FFF7ED] to-white">
-          <div className="absolute -top-3 left-6">
-            <span className="bg-gradient-to-r from-[#F97066] to-[#FB923C] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-              RECOMMENDED
-            </span>
-          </div>
-          <div className="flex items-start justify-between mb-5">
-            <div>
-              <h3 className="text-xl font-bold text-slate-900">Starter Plan</h3>
-              <p className="text-sm text-slate-500 mt-1">Everything you need to get started</p>
-            </div>
-            <div className="text-right">
-              <div className="text-3xl font-bold text-slate-900">
-                $1<span className="text-base font-normal text-slate-400">.00</span>
-              </div>
-              <div className="text-xs text-slate-400">introductory offer</div>
-            </div>
-          </div>
-          <ul className="space-y-2.5">
-            {PLAN_FEATURES.map(f => (
-              <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600">
-                <div className="w-5 h-5 rounded-full bg-[#F97066]/10 flex items-center justify-center shrink-0">
-                  <Check className="w-3 h-3 text-[#F97066]" />
+      <StepTitle icon={CreditCard} step={3} subtitle="Choose your plan" />
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {plans.map(p => {
+          const active = selected === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => onSelect(p.id)}
+              className={`text-left rounded-2xl p-6 border-2 transition-all ${
+                active
+                  ? 'border-[#F97066] bg-gradient-to-br from-[#FFF7ED] to-white shadow-lg shadow-[#F97066]/10'
+                  : 'border-slate-200 bg-white hover:border-[#F97066]/40'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-bold text-slate-900">{p.name}</h3>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                  active ? 'border-[#F97066] bg-[#F97066]' : 'border-slate-300'
+                }`}>
+                  {active && <Check className="w-3 h-3 text-white" />}
                 </div>
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+              <div className="flex items-baseline gap-1.5 mb-1">
+                <span className="text-3xl font-bold text-slate-900">{p.price}</span>
+                <span className="text-sm font-medium text-slate-500">{p.period}</span>
+              </div>
+              <p className="text-xs text-slate-400">{p.note}</p>
+            </button>
+          );
+        })}
       </div>
-      <NavButtons onBack={onBack} onNext={onNext} nextLabel="Proceed to Payment" />
+
+      <div className="border-t border-slate-100 pt-5">
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Everything included</p>
+        <ul className="grid sm:grid-cols-2 gap-2.5">
+          {PLAN_FEATURES.map(f => (
+            <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600">
+              <div className="w-5 h-5 rounded-full bg-[#F97066]/10 flex items-center justify-center shrink-0">
+                <Check className="w-3 h-3 text-[#F97066]" />
+              </div>
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <NavButtons onBack={onBack} onNext={onNext} nextLabel="Continue to Review" />
     </>
   );
 }
@@ -623,14 +667,21 @@ function Step4({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
 function Step5({
   clientSecret,
   registrationId,
+  billingInterval,
   businessEmail,
+  contactEmail,
   onBack,
 }: {
   clientSecret: string;
   registrationId: number;
+  billingInterval: 'monthly' | 'annual';
   businessEmail: string;
+  contactEmail: string;
   onBack: () => void;
 }) {
+  const planName = billingInterval === 'annual' ? 'Annual' : 'Monthly';
+  const planAmount = billingInterval === 'annual' ? PRICE_ANNUAL_AMOUNT : PRICE_MONTHLY_AMOUNT;
+  const planPeriod = billingInterval === 'annual' ? '/ year' : '/ month';
   type Phase = 'payment' | 'provisioning' | 'active' | 'failed';
   const [phase, setPhase] = useState<Phase>('payment');
   const [pollData, setPollData] = useState<{ status: string; web_url?: string; admin_email?: string; temp_password?: string } | null>(null);
@@ -671,17 +722,6 @@ function Step5({
     return () => clearInterval(id);
   }, [phase, registrationId]);
 
-  // Warn user before leaving the page during provisioning — payment already
-  // captured, leaving now leaves them in a stuck state with no refund.
-  useEffect(() => {
-    if (phase !== 'provisioning') return;
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = '';
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [phase]);
 
   if (phase === 'provisioning') {
     return (
@@ -690,11 +730,18 @@ function Step5({
           <Loader2 className="w-9 h-9 text-[#F97066] animate-spin" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-3">Setting up your daycare</h2>
-        <p className="text-slate-500 max-w-sm mx-auto leading-relaxed">
-          We&apos;re provisioning your dedicated cloud environment. This usually takes 8–9 minutes — please keep this tab open.
+        <p className="text-slate-500 max-w-sm mx-auto leading-relaxed mb-5">
+          We&apos;re provisioning your dedicated cloud environment. This usually takes 4–5 minutes.
         </p>
+        <div className="flex items-start gap-2.5 px-4 py-3 rounded-xl bg-green-50 border border-green-100 max-w-sm mx-auto mb-3 text-left">
+          <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+          <p className="text-sm text-green-700">
+            We&apos;ll email your login details to <span className="font-semibold">{contactEmail}</span> when your platform is ready.
+          </p>
+        </div>
+        <p className="text-xs text-slate-400">You can safely close this tab — provisioning continues in the background.</p>
         {pollData && (
-          <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-500 text-sm">
+          <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-500 text-sm">
             Status: <span className="font-medium capitalize">{pollData.status}</span>
           </div>
         )}
@@ -778,11 +825,11 @@ function Step5({
     <>
       <StepTitle icon={Lock} step={5} subtitle="Complete your payment" />
       <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100 mb-6">
-        <span className="text-sm font-medium text-slate-600">Starter Plan</span>
-        <span className="text-lg font-bold text-slate-900">$1.00</span>
+        <span className="text-sm font-medium text-slate-600">{planName} Plan</span>
+        <span className="text-lg font-bold text-slate-900">{planAmount} <span className="text-sm font-medium text-slate-400">{planPeriod}</span></span>
       </div>
 
-      <PaymentForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess} />
+      <PaymentForm clientSecret={clientSecret} amountLabel={planAmount} onPaymentSuccess={handlePaymentSuccess} />
 
       <div className="mt-6">
         <button
@@ -808,6 +855,7 @@ export default function ApplyPage() {
   const [submitError, setSubmitError] = useState('');
   const [registrationId, setRegistrationId] = useState<number | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
 
   const update = (k: keyof FormData, v: string) => {
     setFormData(prev => ({ ...prev, [k]: v }));
@@ -860,6 +908,7 @@ export default function ApplyPage() {
           contact_title: formData.contact_title,
           contact_phone: `${formData.contact_phone_code} ${formData.contact_phone_number}`,
           contact_email: formData.contact_email,
+          billing_interval: billingInterval,
           captcha_token: captchaToken,
         }),
       });
@@ -867,7 +916,7 @@ export default function ApplyPage() {
       if (!res.ok) throw new Error(data.message ?? 'Registration failed. Please try again.');
       setRegistrationId(data.registration_id);
       setClientSecret(data.client_secret);
-      go(4);
+      go(5);
     } catch (e: unknown) {
       setSubmitError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
     } finally {
@@ -922,25 +971,33 @@ export default function ApplyPage() {
               <Step2 formData={formData} onChange={update} onNext={nextStep2} onBack={() => go(1)} errors={errors} />
             )}
             {step === 3 && (
-              <Step3
-                formData={formData}
-                captchaToken={captchaToken}
-                onCaptcha={setCaptchaToken}
-                onSubmit={handleSubmit}
+              <PlanStep
+                selected={billingInterval}
+                onSelect={setBillingInterval}
+                onNext={() => go(4)}
                 onBack={() => go(2)}
-                loading={loading}
-                error={submitError}
               />
             )}
             {step === 4 && (
-              <Step4 onNext={() => go(5)} onBack={() => go(3)} />
+              <ReviewStep
+                formData={formData}
+                billingInterval={billingInterval}
+                captchaToken={captchaToken}
+                onCaptcha={setCaptchaToken}
+                onSubmit={handleSubmit}
+                onBack={() => go(3)}
+                loading={loading}
+                error={submitError}
+              />
             )}
             {step === 5 && clientSecret && registrationId !== null && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <Step5
                   clientSecret={clientSecret}
                   registrationId={registrationId}
+                  billingInterval={billingInterval}
                   businessEmail={formData.email}
+                  contactEmail={formData.contact_email}
                   onBack={() => go(4)}
                 />
               </Elements>

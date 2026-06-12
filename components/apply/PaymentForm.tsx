@@ -6,10 +6,11 @@ import { Loader2, Lock } from 'lucide-react';
 
 interface Props {
   clientSecret: string;
+  amountLabel?: string;
   onPaymentSuccess: (paymentIntentId: string) => void;
 }
 
-export default function PaymentForm({ clientSecret, onPaymentSuccess }: Props) {
+export default function PaymentForm({ clientSecret, amountLabel = '$300.00', onPaymentSuccess }: Props) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,7 @@ export default function PaymentForm({ clientSecret, onPaymentSuccess }: Props) {
         {loading ? (
           <><Loader2 className="w-4 h-4 animate-spin" /> Processing…</>
         ) : (
-          <><Lock className="w-4 h-4" /> Pay $1.00</>
+          <><Lock className="w-4 h-4" /> Pay {amountLabel}</>
         )}
       </button>
 
