@@ -684,7 +684,7 @@ function Step5({
   const planPeriod = billingInterval === 'annual' ? '/ year' : '/ month';
   type Phase = 'payment' | 'provisioning' | 'active' | 'failed';
   const [phase, setPhase] = useState<Phase>('payment');
-  const [pollData, setPollData] = useState<{ status: string; web_url?: string; admin_email?: string; temp_password?: string } | null>(null);
+  const [pollData, setPollData] = useState<{ status: string; web_url?: string; checkin_url?: string; admin_email?: string; temp_password?: string } | null>(null);
   const [verifyError, setVerifyError] = useState('');
 
   const handlePaymentSuccess = useCallback(async (paymentIntentId: string) => {
@@ -782,16 +782,28 @@ function Step5({
           </div>
         </div>
 
-        {pollData?.web_url && (
-          <a
-            href={pollData.web_url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#F97066] to-[#FB923C] text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-          >
-            Open your app <ExternalLink className="w-4 h-4" />
-          </a>
-        )}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {pollData?.web_url && (
+            <a
+              href={pollData.web_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#F97066] to-[#FB923C] text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+            >
+              Open your app <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+          {pollData?.checkin_url && (
+            <a
+              href={pollData.checkin_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors"
+            >
+              Staff Check-In app <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
 
         <p className="text-xs text-slate-400 mt-6">
           You will be asked to change your password on first login.
