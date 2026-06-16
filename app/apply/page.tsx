@@ -800,7 +800,7 @@ function Step5({
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors"
             >
-              Staff Check-In app <ExternalLink className="w-4 h-4" />
+              Check-In app <ExternalLink className="w-4 h-4" />
             </a>
           )}
         </div>
