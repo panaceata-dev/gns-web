@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Shield, Smartphone } from "lucide-react";
 
@@ -105,12 +106,12 @@ export default function HeroSection() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </button>
 
-              <button
-              onClick={() => scrollTo("#contact")}
-              className="inline-flex items-center bg-white border-2 border-[#F97066] text-[#F97066] hover:bg-[#F97066] hover:text-white rounded-full px-8 h-14 text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Try Free for 14 Days
-            </button>
+              <Link
+                href="/apply"
+                className="inline-flex items-center bg-white border-2 border-[#F97066] text-[#F97066] hover:bg-[#F97066] hover:text-white rounded-full px-8 h-14 text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Get Started
+              </Link>
 
               <button
                 onClick={() => scrollTo("#about")}
