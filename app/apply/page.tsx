@@ -94,16 +94,22 @@ const EMPTY_FORM: FormData = {
 // ── Validation ─────────────────────────────────────────────────────
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const einRe = /^\d{2}-\d{7}$/;
+const zipRe = /^\d{5}(-\d{4})?$/;
+const isValidPhone = (v: string) => v.replace(/\D/g, '').length === 10;
 
 function validate1(d: FormData): Record<string, string> {
   const e: Record<string, string> = {};
   if (!d.business_name.trim()) e.business_name = 'Required';
   if (!d.ein.trim()) e.ein = 'Required';
+  else if (!einRe.test(d.ein.trim())) e.ein = 'Format must be 12-3456789';
   if (!d.address_line1.trim()) e.address_line1 = 'Required';
   if (!d.city.trim()) e.city = 'Required';
   if (!d.zip.trim()) e.zip = 'Required';
+  else if (!zipRe.test(d.zip.trim())) e.zip = 'Enter a valid ZIP code (12345 or 12345-6789)';
   if (!d.state) e.state = 'Required';
   if (!d.phone_number.trim()) e.phone_number = 'Required';
+  else if (!isValidPhone(d.phone_number)) e.phone_number = 'Enter a valid 10-digit phone number';
   if (!d.email.trim()) e.email = 'Required';
   else if (!emailRe.test(d.email)) e.email = 'Invalid email address';
   if (!d.website.trim()) e.website = 'Required';
@@ -116,6 +122,7 @@ function validate2(d: FormData): Record<string, string> {
   if (!d.contact_name.trim()) e.contact_name = 'Required';
   if (!d.contact_title.trim()) e.contact_title = 'Required';
   if (!d.contact_phone_number.trim()) e.contact_phone_number = 'Required';
+  else if (!isValidPhone(d.contact_phone_number)) e.contact_phone_number = 'Enter a valid 10-digit phone number';
   if (!d.contact_email.trim()) e.contact_email = 'Required';
   else if (!emailRe.test(d.contact_email)) e.contact_email = 'Invalid email address';
   return e;
@@ -361,7 +368,7 @@ function Step1({
           {nameCheck?.available && (
             <div className="flex items-center gap-1.5 mt-2 text-xs text-green-600">
               <CheckCircle2 className="w-3 h-3" />
-              Your app URL: <span className="font-mono font-medium">gns-{nameCheck.slug}.aws.panaceata.com</span>
+              Your app URL: <span className="font-mono font-medium">{nameCheck.slug}.gigglenshine.app</span>
             </div>
           )}
           {nameCheck && !nameCheck.available && (
@@ -375,7 +382,7 @@ function Step1({
                     onClick={() => selectSuggestion(s)}
                     className="px-3 py-1.5 rounded-full border border-[#F97066]/30 bg-[#F97066]/5 text-xs font-medium text-[#E85D53] hover:bg-[#F97066]/15 transition-colors"
                   >
-                    {s.url}
+                    {s.slug}.gigglenshine.app
                   </button>
                 ))}
               </div>
@@ -410,7 +417,7 @@ function Step1({
           <Field
             label="ZIP Code" value={formData.zip}
             onChange={v => onChange('zip', v)}
-            placeholder="90001" error={errors.zip}
+            placeholder="12345" error={errors.zip}
           />
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -537,7 +544,7 @@ function ReviewStep({
         <div className="bg-slate-50 rounded-2xl p-5">
           <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Business</h3>
           <ReviewRow label="Name" value={formData.business_name} />
-          <ReviewRow label="App URL" value={formData.tenant_identifier ? `gns-${formData.tenant_identifier}.aws.panaceata.com` : '—'} />
+          <ReviewRow label="App URL" value={formData.tenant_identifier ? `${formData.tenant_identifier}.gigglenshine.app` : '—'} />
           <ReviewRow label="EIN" value={formData.ein} />
           <ReviewRow label="Address" value={`${formData.address_line1}${formData.address_line2 ? `, ${formData.address_line2}` : ''}`} />
           <ReviewRow label="City" value={formData.city} />
