@@ -938,7 +938,7 @@ export default function ApplyPage() {
   const [registrationId, setRegistrationId] = useState<number | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
-  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'invoice'>('stripe');
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'invoice'>('invoice');
 
   const update = (k: keyof FormData, v: string) => {
     setFormData(prev => ({ ...prev, [k]: v }));
