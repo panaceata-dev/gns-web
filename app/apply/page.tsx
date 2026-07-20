@@ -516,10 +516,11 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
 }
 
 function ReviewStep({
-  formData, billingInterval, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
+  formData, billingInterval, paymentMethod, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
 }: {
   formData: FormData;
   billingInterval: 'monthly' | 'annual';
+  paymentMethod: 'stripe' | 'invoice';
   captchaToken: string | null;
   onCaptcha: (token: string | null) => void;
   onSubmit: () => void;
@@ -536,10 +537,17 @@ function ReviewStep({
       <div className="space-y-4 mb-6">
         <div className="bg-slate-50 rounded-2xl p-5">
           <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Plan</h3>
-          <div className="flex justify-between py-1">
-            <span className="text-sm text-slate-500">{planName} subscription</span>
-            <span className="text-sm font-medium text-slate-800">{planAmount} <span className="text-slate-400">{planPeriod}</span></span>
-          </div>
+          {paymentMethod === 'invoice' ? (
+            <div className="flex justify-between py-1">
+              <span className="text-sm text-slate-500">Payment method</span>
+              <span className="text-sm font-medium text-slate-800">Invoice billing</span>
+            </div>
+          ) : (
+            <div className="flex justify-between py-1">
+              <span className="text-sm text-slate-500">{planName} subscription</span>
+              <span className="text-sm font-medium text-slate-800">{planAmount} <span className="text-slate-400">{planPeriod}</span></span>
+            </div>
+          )}
         </div>
         <div className="bg-slate-50 rounded-2xl p-5">
           <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Business</h3>
@@ -603,11 +611,54 @@ function ReviewStep({
 
 // ── Step 3: Plan Selection (Monthly / Annual) ──────────────────────
 
+function PaymentMethodToggle({
+  selected, onSelect,
+}: {
+  selected: 'stripe' | 'invoice';
+  onSelect: (v: 'stripe' | 'invoice') => void;
+}) {
+  const options: { id: 'stripe' | 'invoice'; name: string; note: string }[] = [
+    { id: 'stripe', name: 'Pay by card (Stripe)', note: 'Choose a plan and enter card details' },
+    { id: 'invoice', name: 'Pay by invoice', note: 'Billed directly — no plan or card needed now' },
+  ];
+  return (
+    <div className="grid sm:grid-cols-2 gap-4 mb-8">
+      {options.map(o => {
+        const active = selected === o.id;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            onClick={() => onSelect(o.id)}
+            className={`text-left rounded-2xl p-5 border-2 transition-all ${
+              active
+                ? 'border-[#F97066] bg-gradient-to-br from-[#FFF7ED] to-white shadow-lg shadow-[#F97066]/10'
+                : 'border-slate-200 bg-white hover:border-[#F97066]/40'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <h3 className="text-base font-bold text-slate-900">{o.name}</h3>
+              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                active ? 'border-[#F97066] bg-[#F97066]' : 'border-slate-300'
+              }`}>
+                {active && <Check className="w-3 h-3 text-white" />}
+              </div>
+            </div>
+            <p className="text-xs text-slate-400">{o.note}</p>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function PlanStep({
-  selected, onSelect, onNext, onBack,
+  selected, onSelect, paymentMethod, onSelectPaymentMethod, onNext, onBack,
 }: {
   selected: 'monthly' | 'annual';
   onSelect: (v: 'monthly' | 'annual') => void;
+  paymentMethod: 'stripe' | 'invoice';
+  onSelectPaymentMethod: (v: 'stripe' | 'invoice') => void;
   onNext: () => void;
   onBack: () => void;
 }) {
@@ -617,38 +668,43 @@ function PlanStep({
   ];
   return (
     <>
-      <StepTitle icon={CreditCard} step={3} subtitle="Choose your plan" />
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {plans.map(p => {
-          const active = selected === p.id;
-          return (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => onSelect(p.id)}
-              className={`text-left rounded-2xl p-6 border-2 transition-all ${
-                active
-                  ? 'border-[#F97066] bg-gradient-to-br from-[#FFF7ED] to-white shadow-lg shadow-[#F97066]/10'
-                  : 'border-slate-200 bg-white hover:border-[#F97066]/40'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-slate-900">{p.name}</h3>
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                  active ? 'border-[#F97066] bg-[#F97066]' : 'border-slate-300'
-                }`}>
-                  {active && <Check className="w-3 h-3 text-white" />}
+      <StepTitle icon={CreditCard} step={3} subtitle="How would you like to pay?" />
+
+      <PaymentMethodToggle selected={paymentMethod} onSelect={onSelectPaymentMethod} />
+
+      {paymentMethod === 'stripe' && (
+        <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          {plans.map(p => {
+            const active = selected === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => onSelect(p.id)}
+                className={`text-left rounded-2xl p-6 border-2 transition-all ${
+                  active
+                    ? 'border-[#F97066] bg-gradient-to-br from-[#FFF7ED] to-white shadow-lg shadow-[#F97066]/10'
+                    : 'border-slate-200 bg-white hover:border-[#F97066]/40'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-bold text-slate-900">{p.name}</h3>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                    active ? 'border-[#F97066] bg-[#F97066]' : 'border-slate-300'
+                  }`}>
+                    {active && <Check className="w-3 h-3 text-white" />}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-baseline gap-1.5 mb-1">
-                <span className="text-3xl font-bold text-slate-900">{p.price}</span>
-                <span className="text-sm font-medium text-slate-500">{p.period}</span>
-              </div>
-              <p className="text-xs text-slate-400">{p.note}</p>
-            </button>
-          );
-        })}
-      </div>
+                <div className="flex items-baseline gap-1.5 mb-1">
+                  <span className="text-3xl font-bold text-slate-900">{p.price}</span>
+                  <span className="text-sm font-medium text-slate-500">{p.period}</span>
+                </div>
+                <p className="text-xs text-slate-400">{p.note}</p>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div className="border-t border-slate-100 pt-5">
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Everything included</p>
@@ -675,13 +731,15 @@ function Step5({
   clientSecret,
   registrationId,
   billingInterval,
+  paymentMethod,
   businessEmail,
   contactEmail,
   onBack,
 }: {
-  clientSecret: string;
+  clientSecret: string | null;
   registrationId: number;
   billingInterval: 'monthly' | 'annual';
+  paymentMethod: 'stripe' | 'invoice';
   businessEmail: string;
   contactEmail: string;
   onBack: () => void;
@@ -690,7 +748,9 @@ function Step5({
   const planAmount = billingInterval === 'annual' ? PRICE_ANNUAL_AMOUNT : PRICE_MONTHLY_AMOUNT;
   const planPeriod = billingInterval === 'annual' ? '/ year' : '/ month';
   type Phase = 'payment' | 'provisioning' | 'active' | 'failed';
-  const [phase, setPhase] = useState<Phase>('payment');
+  // Invoice tenants have nothing to pay here — provisioning was already triggered
+  // by save-registration, so start straight in the polling phase.
+  const [phase, setPhase] = useState<Phase>(paymentMethod === 'invoice' ? 'provisioning' : 'payment');
   const [pollData, setPollData] = useState<{ status: string; web_url?: string; checkin_url?: string; admin_email?: string; temp_password?: string } | null>(null);
   const [verifyError, setVerifyError] = useState('');
 
@@ -839,7 +899,10 @@ function Step5({
     );
   }
 
-  // phase === 'payment'
+  // phase === 'payment' — only reachable when paymentMethod === 'stripe', which always
+  // supplies a real clientSecret; guard keeps TypeScript honest about the null case.
+  if (!clientSecret) return null;
+
   return (
     <>
       <StepTitle icon={Lock} step={5} subtitle="Complete your payment" />
@@ -875,6 +938,7 @@ export default function ApplyPage() {
   const [registrationId, setRegistrationId] = useState<number | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'invoice'>('invoice');
 
   const update = (k: keyof FormData, v: string) => {
     setFormData(prev => ({ ...prev, [k]: v }));
@@ -927,14 +991,15 @@ export default function ApplyPage() {
           contact_title: formData.contact_title,
           contact_phone: `${formData.contact_phone_code} ${formData.contact_phone_number}`,
           contact_email: formData.contact_email,
-          billing_interval: billingInterval,
+          payment_method: paymentMethod,
+          billing_interval: paymentMethod === 'stripe' ? billingInterval : null,
           captcha_token: captchaToken,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? 'Registration failed. Please try again.');
       setRegistrationId(data.registration_id);
-      setClientSecret(data.client_secret);
+      setClientSecret(data.client_secret ?? null);
       go(5);
     } catch (e: unknown) {
       setSubmitError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
@@ -993,6 +1058,8 @@ export default function ApplyPage() {
               <PlanStep
                 selected={billingInterval}
                 onSelect={setBillingInterval}
+                paymentMethod={paymentMethod}
+                onSelectPaymentMethod={setPaymentMethod}
                 onNext={() => go(4)}
                 onBack={() => go(2)}
               />
@@ -1001,6 +1068,7 @@ export default function ApplyPage() {
               <ReviewStep
                 formData={formData}
                 billingInterval={billingInterval}
+                paymentMethod={paymentMethod}
                 captchaToken={captchaToken}
                 onCaptcha={setCaptchaToken}
                 onSubmit={handleSubmit}
@@ -1009,12 +1077,24 @@ export default function ApplyPage() {
                 error={submitError}
               />
             )}
-            {step === 5 && clientSecret && registrationId !== null && (
+            {step === 5 && registrationId !== null && paymentMethod === 'invoice' && (
+              <Step5
+                clientSecret={null}
+                registrationId={registrationId}
+                billingInterval={billingInterval}
+                paymentMethod={paymentMethod}
+                businessEmail={formData.email}
+                contactEmail={formData.contact_email}
+                onBack={() => go(4)}
+              />
+            )}
+            {step === 5 && clientSecret && registrationId !== null && paymentMethod === 'stripe' && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <Step5
                   clientSecret={clientSecret}
                   registrationId={registrationId}
                   billingInterval={billingInterval}
+                  paymentMethod={paymentMethod}
                   businessEmail={formData.email}
                   contactEmail={formData.contact_email}
                   onBack={() => go(4)}
