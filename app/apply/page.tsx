@@ -368,7 +368,6 @@ function Step1({
           <input
             type="text"
             value={formData.tenant_identifier}
-            placeholder="e.g. LHD"
             onChange={e => onChange('tenant_identifier', e.target.value)}
             className={`w-full px-4 py-3 rounded-xl border text-slate-800 text-sm outline-none transition-colors ${
               errors.tenant_identifier || nameError
