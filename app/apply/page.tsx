@@ -101,6 +101,7 @@ const isValidPhone = (v: string) => v.replace(/\D/g, '').length === 10;
 function validate1(d: FormData): Record<string, string> {
   const e: Record<string, string> = {};
   if (!d.business_name.trim()) e.business_name = 'Required';
+  if (!d.tenant_identifier.trim()) e.tenant_identifier = 'Required';
   if (!d.ein.trim()) e.ein = 'Required';
   else if (!einRe.test(d.ein.trim())) e.ein = 'Format must be 12-3456789';
   if (!d.address_line1.trim()) e.address_line1 = 'Required';
@@ -300,23 +301,21 @@ function Step1({
   const [nameError, setNameError] = useState('');
 
   useEffect(() => {
-    const name = formData.business_name.trim();
-    if (name.length < 3) {
+    const identifier = formData.tenant_identifier.trim();
+    if (identifier.length < 2) {
       setNameCheck(null);
       setNameError('');
-      onChange('tenant_identifier', '');
       return;
     }
     setNameChecking(true);
     setNameCheck(null);
     const timer = setTimeout(async () => {
       try {
-        const qs = new URLSearchParams({ name });
+        const qs = new URLSearchParams({ identifier });
         if (formData.state) qs.set('state', formData.state);
         const res = await fetch(`${API_URL}/check-name?${qs}`);
         const data: NameCheckResult = await res.json();
         setNameCheck(data);
-        onChange('tenant_identifier', data.available ? data.slug : '');
       } catch {
         setNameCheck(null);
       } finally {
@@ -324,7 +323,7 @@ function Step1({
       }
     }, 600);
     return () => clearTimeout(timer);
-  }, [formData.business_name]); // eslint-disable-line
+  }, [formData.tenant_identifier]); // eslint-disable-line
 
   const selectSuggestion = (s: { slug: string; url: string }) => {
     onChange('tenant_identifier', s.slug);
@@ -344,7 +343,7 @@ function Step1({
       <StepTitle icon={Building2} step={1} subtitle="Tell us about your business" />
       <div className="space-y-5">
 
-        {/* Business Name + availability check */}
+        {/* Business Name — plain field, no longer tied to the identifier/URL */}
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">Business Name</label>
           <input
@@ -353,7 +352,26 @@ function Step1({
             placeholder="Sunshine Daycare LLC"
             onChange={e => onChange('business_name', e.target.value)}
             className={`w-full px-4 py-3 rounded-xl border text-slate-800 text-sm outline-none transition-colors ${
-              errors.business_name || nameError
+              errors.business_name
+                ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100'
+                : 'border-slate-200 focus:border-[#F97066] focus:ring-2 focus:ring-[#F97066]/10'
+            }`}
+          />
+          {errors.business_name && (
+            <p className="text-xs text-red-500 mt-1">{errors.business_name}</p>
+          )}
+        </div>
+
+        {/* Tenant Identifier + availability check — this drives the app's web address */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">Tenant Identifier (used for your web address)</label>
+          <input
+            type="text"
+            value={formData.tenant_identifier}
+            placeholder="e.g. LHD"
+            onChange={e => onChange('tenant_identifier', e.target.value)}
+            className={`w-full px-4 py-3 rounded-xl border text-slate-800 text-sm outline-none transition-colors ${
+              errors.tenant_identifier || nameError
                 ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100'
                 : nameCheck?.available
                 ? 'border-green-300 focus:border-green-400 focus:ring-2 focus:ring-green-100'
@@ -373,7 +391,7 @@ function Step1({
           )}
           {nameCheck && !nameCheck.available && (
             <div className="mt-2">
-              <p className="text-xs text-red-500 mb-2">This name is already taken. Pick a suggestion:</p>
+              <p className="text-xs text-red-500 mb-2">This identifier is already taken. Pick a suggestion:</p>
               <div className="flex gap-2 flex-wrap">
                 {nameCheck.suggestions?.map(s => (
                   <button
@@ -388,8 +406,8 @@ function Step1({
               </div>
             </div>
           )}
-          {(errors.business_name || nameError) && (
-            <p className="text-xs text-red-500 mt-1">{errors.business_name || nameError}</p>
+          {(errors.tenant_identifier || nameError) && (
+            <p className="text-xs text-red-500 mt-1">{errors.tenant_identifier || nameError}</p>
           )}
         </div>
 
