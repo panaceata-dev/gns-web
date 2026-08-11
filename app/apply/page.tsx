@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, ArrowLeft, Check, Building2, User,
   FileText, CreditCard, Loader2, ExternalLink,
-  CheckCircle2, AlertCircle, Lock,
+  CheckCircle2, AlertCircle, Lock, Palette,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { loadStripe } from '@stripe/stripe-js';
@@ -532,12 +532,22 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+const PRIMARY_COLORS: { value: string; label: string; swatch: string }[] = [
+  { value: 'blue', label: 'Blue', swatch: '#155dfc' },
+  { value: 'red', label: 'Red', swatch: '#CC0033' },
+  { value: 'orange', label: 'Orange', swatch: '#EA580C' },
+  { value: 'yellow', label: 'Yellow', swatch: '#FACC15' },
+  { value: 'green', label: 'Green', swatch: '#22C55E' },
+];
+
 function ReviewStep({
-  formData, billingInterval, paymentMethod, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
+  formData, billingInterval, paymentMethod, primaryColor, onSelectPrimaryColor, captchaToken, onCaptcha, onSubmit, onBack, loading, error,
 }: {
   formData: FormData;
   billingInterval: 'monthly' | 'annual';
   paymentMethod: 'stripe' | 'invoice';
+  primaryColor: string;
+  onSelectPrimaryColor: (color: string) => void;
   captchaToken: string | null;
   onCaptcha: (token: string | null) => void;
   onSubmit: () => void;
@@ -586,6 +596,31 @@ function ReviewStep({
           <ReviewRow label="Title" value={formData.contact_title} />
           <ReviewRow label="Phone" value={`${formData.contact_phone_code} ${formData.contact_phone_number}`} />
           <ReviewRow label="Email" value={formData.contact_email} />
+        </div>
+        <div className="bg-slate-50 rounded-2xl p-5">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <Palette className="w-3.5 h-3.5" /> Brand Color
+          </h3>
+          <p className="text-sm text-slate-500 mb-3">
+            Pick the primary color for your daycare&apos;s dashboard. You can change this later.
+          </p>
+          <div className="flex gap-3">
+            {PRIMARY_COLORS.map((c) => (
+              <button
+                key={c.value}
+                type="button"
+                onClick={() => onSelectPrimaryColor(c.value)}
+                aria-label={c.label}
+                title={c.label}
+                className={`w-10 h-10 rounded-full transition-all ${
+                  primaryColor === c.value
+                    ? 'ring-2 ring-offset-2 ring-slate-800 scale-110'
+                    : 'ring-1 ring-slate-200 hover:scale-105'
+                }`}
+                style={{ backgroundColor: c.swatch }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -956,6 +991,7 @@ export default function ApplyPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'invoice'>('invoice');
+  const [primaryColor, setPrimaryColor] = useState<string>('blue');
 
   const update = (k: keyof FormData, v: string) => {
     setFormData(prev => ({ ...prev, [k]: v }));
@@ -1010,6 +1046,7 @@ export default function ApplyPage() {
           contact_email: formData.contact_email,
           payment_method: paymentMethod,
           billing_interval: paymentMethod === 'stripe' ? billingInterval : null,
+          primary_color: primaryColor,
           captcha_token: captchaToken,
         }),
       });
@@ -1086,6 +1123,8 @@ export default function ApplyPage() {
                 formData={formData}
                 billingInterval={billingInterval}
                 paymentMethod={paymentMethod}
+                primaryColor={primaryColor}
+                onSelectPrimaryColor={setPrimaryColor}
                 captchaToken={captchaToken}
                 onCaptcha={setCaptchaToken}
                 onSubmit={handleSubmit}
