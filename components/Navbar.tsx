@@ -12,7 +12,7 @@ const navItems = [
   { label: "Features", href: "#features", isAnchor: true },
   { label: "Testimonials", href: "#testimonials", isAnchor: true },
   { label: "Blog", href: "/blog", isAnchor: false },
-  { label: "Contact", href: "#contact", isAnchor: true },
+  { label: "Contact", href: "/contact", isAnchor: false },
 ];
 
 export default function Navbar() {
@@ -90,12 +90,12 @@ export default function Navbar() {
 
           {/* CTA */}
           <div className="hidden md:block">
-            <button
-              onClick={() => scrollTo("#contact")}
-              className="bg-gradient-to-r from-[#F97066] to-[#FB923C] hover:from-[#E85D53] hover:to-[#E8832A] text-white rounded-full px-6 h-11 font-medium shadow-lg shadow-[#F97066]/25 hover:shadow-[#F97066]/40 transition-all duration-300"
+            <Link
+              href="/contact"
+              className="inline-flex items-center bg-gradient-to-r from-[#F97066] to-[#FB923C] hover:from-[#E85D53] hover:to-[#E8832A] text-white rounded-full px-6 h-11 font-medium shadow-lg shadow-[#F97066]/25 hover:shadow-[#F97066]/40 transition-all duration-300"
             >
               Request a Demo
-            </button>
+            </Link>
           </div>
 
           {/* Mobile toggle */}
@@ -143,12 +143,13 @@ export default function Navbar() {
                 )
               )}
               <div className="pt-2">
-                <button
-                  onClick={() => scrollTo("#contact")}
-                  className="w-full bg-gradient-to-r from-[#F97066] to-[#FB923C] text-white rounded-full h-12 font-medium"
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center w-full bg-gradient-to-r from-[#F97066] to-[#FB923C] text-white rounded-full h-12 font-medium"
                 >
                   Request a Demo
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>

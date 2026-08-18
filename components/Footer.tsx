@@ -4,7 +4,14 @@ import Image from "next/image";
 import { Heart } from "lucide-react";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 
-const quickLinks = ["Home", "About Us", "Features", "Testimonials", "Contact"];
+const quickLinks = [
+  { label: "Home", href: "#home" },
+  { label: "About Us", href: "#about" },
+  { label: "Features", href: "#features" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy" },
+];
 
 const social = [
   { icon: FaFacebook, href: "https://www.facebook.com/Panaceata", label: "Facebook" },
@@ -44,12 +51,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {quickLinks.map((item) => (
-                <li key={item}>
+                <li key={item.label}>
                   <a
-                    href={`#${item.toLowerCase().replace(/\s/g, "")}`}
+                    href={item.href}
                     className="text-slate-400 hover:text-white transition-colors text-sm"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 </li>
               ))}
