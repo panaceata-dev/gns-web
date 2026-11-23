@@ -45,7 +45,7 @@ export default function PrivacyPage() {
                   Legal
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+              <h1 className="text-[2rem] md:text-[2.625rem] font-bold text-slate-900 leading-tight">
                 Privacy Policy
               </h1>
               <p className="mt-5 text-lg text-slate-500 leading-relaxed">
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
 
           <div className="space-y-8">
             <section id="relationship" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 1. Our Relationship With Childcare Providers
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="information-we-process" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 2. Information We Process
               </h2>
 
@@ -249,7 +249,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="automatic-info" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 3. Information Collected Automatically
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -268,7 +268,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="analytics" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 4. Analytics
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -286,7 +286,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="how-we-use" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 5. How We Use Information
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -306,7 +306,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="disclosure" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 6. How We Disclose Information
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -330,7 +330,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="do-not-sell" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 7. We Do Not Sell Personal Information
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -349,7 +349,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="childrens-privacy" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 8. Children&apos;s Privacy
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -383,7 +383,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="retention" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 9. Data Retention
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -409,7 +409,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="security" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 10. Data Security
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -429,7 +429,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="push-notifications" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 11. Push Notifications
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -445,7 +445,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="authentication" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 12. Account Authentication
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -463,7 +463,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="support" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 13. Support
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -481,7 +481,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="de-identified" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 14. De-Identified and Aggregated Information
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -500,7 +500,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="rights" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 15. Privacy Rights and Choices
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -536,7 +536,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="rights-state" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 16. U.S. State Privacy Rights
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -559,7 +559,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="third-party-services" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 17. Third-Party Services
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -576,7 +576,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="us-services" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 18. United States Services
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -592,7 +592,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="changes" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 19. Changes to This Privacy Policy
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
@@ -610,7 +610,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="contact-us" className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-2xl md:text-3xl font-bold text-slate-900">
+              <h2 className="mb-4 text-[1.375rem] md:text-[1.75rem] font-bold text-slate-900">
                 20. Contact Us
               </h2>
               <div className="space-y-5 text-base text-slate-600 leading-relaxed">
